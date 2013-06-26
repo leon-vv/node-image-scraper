@@ -69,7 +69,6 @@ function Scraper(address){
 
 	events.call(this);
 	this.address = address;
-	this.setMaxListeners(1);
 };
 
 // Inherit the methods of "events".
