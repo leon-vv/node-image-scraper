@@ -18,8 +18,6 @@ function Image(image, address){
 	this.extension = path.extname(at.src);
 	this.address = url.resolve(address, at.src);
 	this.fromAddress = address;
-
-	console.log(this.saveTo);
 }
 
 Image.prototype.save = function(){
