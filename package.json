@@ -5,9 +5,12 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "",
-  "keywords": [
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/leon-vv/node-image-scraper.git"
+	},
+	"keywords": [
 		"scrape",
 		"image",
 		"web-scraper",
