@@ -107,8 +107,8 @@ Scraper.prototype.scrape = function(callback){
 
 				var current = previous + data;
 
-				current.replace(/<img.*?\/>/ig, function(m){
-
+				current.replace(/<img[\S\s]*?>/ig, function(m){
+				
 					var image = new Image(cheerio.load(m)("img")[0], ref.address);
 
 					ref.emit("image", image);
