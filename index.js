@@ -20,7 +20,7 @@ function Image(image, address){
 	this.fromAddress = address;
 }
 
-Image.prototype.save = function(){
+Image.prototype.save = function(callback){
 
 	var parsedUrl = url.parse(this.address);
 
@@ -54,6 +54,8 @@ Image.prototype.save = function(){
 			response.on("end", function(){
 
 				imageFile.end();
+				
+				if(typeof(callback) == "function") callback.call(ref);
 			});
 		}
 	});
@@ -108,7 +110,7 @@ Scraper.prototype.scrape = function(callback){
 				var current = previous + data;
 
 				current.replace(/<img[\S\s]*?>/ig, function(m){
-				
+
 					var image = new Image(cheerio.load(m)("img")[0], ref.address);
 
 					ref.emit("image", image);
