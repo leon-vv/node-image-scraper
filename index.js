@@ -37,7 +37,8 @@ Image.prototype.save = function(callback){
 
 		if(response.statusCode != 200){
 
-			console.error("Image scraper(3): image couldn't be found. (statusCode:" + statusCode + ")");
+			console.error("Image scraper(3): image couldn't be found. (statusCode:" + response.statusCode + ")");
+			return request.end();
 		}
 		else{
 
@@ -99,8 +100,10 @@ Scraper.prototype.scrape = function(callback){
 	var request = protocol.request(this.address, function(response){
 
 		if(response.statusCode != 200){
-
-			console.error("Image scraper(1): web page couldn't be found. (statusCode:" + statusCode + ")");
+			console.error("Image scraper(1): web page couldn't be found. (statusCode:" + response.statusCode + ")");
+			ref.emit("end");
+			request.end();
+			return process.exit(1);
 		}
 		else{
 
