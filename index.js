@@ -28,14 +28,17 @@ Image.prototype.save = function(callback){
 	var ref = this;
 
 	// Support HTTPS.
-	if(parsedUrl.protocol == "https:") var protocol = https;
-	else var protocol = http;
+	var protocol = http;
+	if(parsedUrl.protocol == "https:") {
+		protocol = https;
+	}
 
 	var request = protocol.request(this.address, function(response){
 
 		if(response.statusCode != 200){
-		
-			console.error("Image scraper(3): image couldn't be found.");
+
+			console.error("Image scraper(3): image couldn't be found. (statusCode:" + response.statusCode + ")");
+			return request.end();
 		}
 		else{
 
@@ -54,7 +57,7 @@ Image.prototype.save = function(callback){
 			response.on("end", function(){
 
 				imageFile.end();
-				
+
 				if(typeof(callback) == "function") callback.call(ref);
 			});
 		}
@@ -71,7 +74,7 @@ function Scraper(address){
 
 	events.call(this);
 	this.address = address;
-};
+}
 
 // Inherit the methods of "events".
 util.inherits(Scraper, events);
@@ -89,24 +92,27 @@ Scraper.prototype.scrape = function(callback){
 	var ref = this;
 
 	// Support HTTPS.
-	if(parsedUrl.protocol == "https:") var protocol = https;
-	else var protocol = http;
+	var protocol = http;
+	if(parsedUrl.protocol == "https:") {
+		protocol = https;
+	}
 
 	var request = protocol.request(this.address, function(response){
 
 		if(response.statusCode != 200){
-		
-			console.error("Image scraper(1): web page couldn't be found.");
+			console.error("Image scraper(1): web page couldn't be found. (statusCode:" + response.statusCode + ")");
+			ref.emit("end");
+			request.end();
+			return process.exit(1);
 		}
 		else{
 
 			response.setEncoding("utf8");
 
 			var previous = "",
-			current;
+				current;
 
 			response.on("data", function(data){
-
 				var current = previous + data;
 
 				current.replace(/<img[\S\s]*?>/ig, function(m){
@@ -116,11 +122,11 @@ Scraper.prototype.scrape = function(callback){
 					ref.emit("image", image);
 				});
 
-				var previous = data;
+				previous = data;
 			});
 
 			response.on("end", function(){
-
+				ref.emit("end");
 			});
 		}
 	});
