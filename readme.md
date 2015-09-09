@@ -7,7 +7,7 @@ The image-scrape module provides a class which needs to be constructed with a ur
 ```JavaScript
 var Scraper = require("image-scraper");
 
-var scraper = new Scraper("http://www.nodejs.org");
+var scraper = new Scraper("http://apod.nasa.gov/apod/astropix.html");
 ```
 The url can be changed easily:
 ```JavaScript
@@ -17,16 +17,18 @@ The scraper object provides the .scrape() method.
 The scrape method accepts one optional argument: a callback function.
 
 This callback function can also be set using the .on() method.
+
 ```JavaScript
 scraper.on("image", function(image){
 
 	// Do something.	
 });
 ```
-The callback is called every time an image tag has been found,
-the image object which is passed in consist of the following:
+As soon as 'scraper.scrape()' is called, the callback will be fired with every image found on the webpage, note however that dynamically generated images will not be found.
+
+The image object that is passed to the callback has the following properties and methods:
 ```JavaScript
-// The attributes found in the image tag, which is parsed by [cheerio](https://npmjs.org/package/cheerio).
+// The attributes found in the image tag, which is parsed by Cheerio (https://npmjs.org/package/cheerio).
 image.attributes;
 // The basename of the image.
 image.name;
@@ -41,4 +43,15 @@ image.fromAddress;
 // Save the image.
 image.save();
 ```
-The default behaviour is to save the image in the current directory, with the name and extension found in the src attribute.
+The behaviour of image.save() can be changed by setting the name, saveTo, and extension properties.
+The saveTo property is by default set to the current directory, and the other two properties are by default set to the data found in the src attribute of the img tag.
+
+Thus, the smallest program that scans a webpage for images and saves them in the current directory looks as follows:
+```JavaScript
+var Scraper = require('image-scraper');
+var scraper = new Scraper('http://apod.nasa.gov/apod/astropix.html');
+
+scraper.scrape(function(image) { 
+	image.save();
+});
+```

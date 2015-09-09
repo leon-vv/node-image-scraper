@@ -1,6 +1,6 @@
 {
 	"name": "image-scraper",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"description": "Scrape images from a website easily.",
 	"main": "index.js",
 	"scripts": {
