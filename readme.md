@@ -7,7 +7,7 @@ The image-scrape module provides a class which needs to be constructed with a ur
 ```JavaScript
 var Scraper = require("image-scraper");
 
-var scraper = new Scraper("http://apod.nasa.gov/apod/astropix.html");
+var scraper = new Scraper("https://apod.nasa.gov/apod/astropix.html");
 ```
 The url can be changed easily:
 ```JavaScript
@@ -49,7 +49,7 @@ The saveTo property is by default set to the current directory, and the other tw
 Thus, the smallest program that scans a webpage for images and saves them in the current directory looks as follows:
 ```JavaScript
 var Scraper = require('image-scraper');
-var scraper = new Scraper('http://apod.nasa.gov/apod/astropix.html');
+var scraper = new Scraper('https://apod.nasa.gov/apod/astropix.html');
 
 scraper.scrape(function(image) { 
 	image.save();
